@@ -9,7 +9,8 @@ app.get('/', function(req, res){
     res.render('pages/index')
 });
 
-server = app.listen(3000);
+var PORT = process.env.PORT || 5000;
+server = app.listen(PORT);
 
 //socket io
 const io = require('socket.io')(server)
