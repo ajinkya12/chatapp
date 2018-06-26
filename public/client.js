@@ -1,7 +1,7 @@
 $(function(){
-    var PORT = (process.env.PORT || 5000)
-    var socket = io.connect('http://localhost:' + PORT)
-    console.log('Client Connection: ');
+    //var socket = io.connect('http://localhost:5000')
+    var socket = io.connect('https://blooming-island-60825.herokuapp.com')
+    console.log('Client Connection');
 
     var message = $("#message")
 	var username = $("#username")
