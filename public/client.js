@@ -27,11 +27,18 @@ $(function(){
         message.val('')
         chatroom.append("<p class='newmessage'><strong>" + data.username + ":</strong> " + data.message + "</p>")
     })
-
+    
     send_username.on('click', function(){
         socket.emit('change_username', {username: username.val()})
     })
 
+    message.bind('keypress', (e) =>{
+        var key = e.which || e.keyCode;
+        if (key === 13) {
+            console.log('Enter pressed');
+            socket.emit('new_message', { message: message.val()})
+        }
+    })
     window.setInterval(function(){
         chatroom.scrollTop(chatroom[0].scrollHeight);
     }, 5000);
