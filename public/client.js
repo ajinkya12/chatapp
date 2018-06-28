@@ -39,7 +39,9 @@ $(function(){
             socket.emit('new_message', { message: message.val()})
         }
     })
+
     window.setInterval(function(){
-        chatroom.scrollTop(chatroom[0].scrollHeight);
-    }, 5000);
+        var chatroom_container = document.getElementById('chatroom_container');
+        chatroom_container.scrollTop = chatroom_container.scrollHeight;
+    }, 2000);
 });
