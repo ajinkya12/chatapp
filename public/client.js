@@ -8,7 +8,8 @@ $(function(){
 	var send_message = $("#send_message")
 	var send_username = $("#send_username")
 	var chatroom = $("#chatroom")
-    
+    var chatroom_container = $("#chatroom_container")
+
     socket.on('connect', function(){
         console.log('Connected')
     })
@@ -39,9 +40,18 @@ $(function(){
             socket.emit('new_message', { message: message.val()})
         }
     })
+    var mouseInChatroom = false
+    chatroom_container.mouseenter(function(){
+        mouseInChatroom = true
+    })
+    chatroom_container.mouseleave(function(){
+        mouseInChatroom = false
+    })
 
     window.setInterval(function(){
-        var chatroom_container = document.getElementById('chatroom_container');
-        chatroom_container.scrollTop = chatroom_container.scrollHeight;
-    }, 2000);
+        if(!mouseInChatroom){ 
+            var chatroom_container = document.getElementById('chatroom_container');
+            chatroom_container.scrollTop = chatroom_container.scrollHeight;
+        }
+    }, 3000);
 });
