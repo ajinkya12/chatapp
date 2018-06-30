@@ -14,6 +14,7 @@ server = app.listen(PORT);
 
 //socket io
 const io = require('socket.io')(server)
+//var onlineUsers = []
 
 io.on('connection', (socket) => {
     console.log('New user connected')
@@ -24,7 +25,6 @@ io.on('connection', (socket) => {
     });
 
     socket.on('new_message', (data) => {
-        console.log('server NEW MEssage:' + data.message.length)
         if(data.message.length != 0){
             io.sockets.emit('new_message', {message: data.message, username: socket.username});
         }

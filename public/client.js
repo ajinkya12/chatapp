@@ -10,6 +10,10 @@ $(function(){
 	var chatroom = $("#chatroom")
     var chatroom_container = $("#chatroom_container")
 
+    var speechSynthesisEnabled = false;
+    if('speechSynthesis' in window){
+        speechSynthesisEnabled = true;
+    }
     socket.on('connect', function(){
         console.log('Connected')
     })
@@ -17,15 +21,21 @@ $(function(){
     socket.on('disconnect', function(){
         console.log('disconnected');
     })
-
-    send_message.on('click', function(){
-        console.log('Clicked ! :: ' + message.val())
-        socket.emit('new_message', { message: message.val()})
-    })
+    var itsMe = false;
 
     socket.on('new_message', (data) => {
-        console.log('NEW MEssage')
-        message.val('')
+        if(itsMe === true){
+            data.username = data.username === 'Anonymous' ? 'You' : data.username;
+            message.val('')
+            itsMe = false;
+        } else {
+            if(speechSynthesisEnabled === true){
+                var msg = new SpeechSynthesisUtterance(data.username + ' says ' + data.message);
+                msg.voice = speechSynthesis.getVoices().filter(function(voice) { return voice.name === 'Lekha'})[0];
+                window.speechSynthesis.speak(msg);
+            }
+        }
+        
         chatroom.append("<p class='newmessage'><strong>" + data.username + ":</strong> " + data.message + "</p>")
     })
     
@@ -36,10 +46,15 @@ $(function(){
     message.bind('keypress', (e) =>{
         var key = e.which || e.keyCode;
         if (key === 13) {
-            console.log('Enter pressed');
+            itsMe = true;
             socket.emit('new_message', { message: message.val()})
         }
     })
+    send_message.on('click', function(){
+        itsMe = true;
+        socket.emit('new_message', { message: message.val()})
+    })
+
     var mouseInChatroom = false
     chatroom_container.mouseenter(function(){
         mouseInChatroom = true
