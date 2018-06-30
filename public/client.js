@@ -1,6 +1,6 @@
 $(function(){
     //var socket = io.connect('http://localhost:5000')
-    var socket = io.connect('https://blooming-island-60825.herokuapp.com')
+    var socket = io.connect('https://flatchat.herokuapp.com')
     console.log('Client Connection');
 
     var message = $("#message")
@@ -29,7 +29,7 @@ $(function(){
             message.val('')
             itsMe = false;
         } else {
-            if(speechSynthesisEnabled === true){
+            if(speechSynthesisEnabled === true && !muted){
                 var msg = new SpeechSynthesisUtterance(data.username + ' says ' + data.message);
                 msg.voice = speechSynthesis.getVoices().filter(function(voice) { return voice.name === 'Lekha'})[0];
                 window.speechSynthesis.speak(msg);
@@ -69,4 +69,10 @@ $(function(){
             chatroom_container.scrollTop = chatroom_container.scrollHeight;
         }
     }, 3000);
+
+    var muted = false;
+    $("#infoToggler").click(function() {
+        $(this).find('img').toggle();
+        muted = !muted;
+    })
 });
