@@ -26,7 +26,7 @@ io.on('connection', (socket) => {
 
     socket.on('new_message', (data) => {
         if(data.message.length != 0){
-            io.sockets.emit('new_message', {message: data.message, username: socket.username});
+            socket.broadcast.emit('new_message', {message: data.message, username: socket.username});
         }
     })
 });
