@@ -1,6 +1,6 @@
 $(function(){
-    var socket = io.connect('http://localhost:5000')
-    //var socket = io.connect('https://flatchat.herokuapp.com')
+    //var socket = io.connect('http://localhost:5000')
+    var socket = io.connect('https://flatchat.herokuapp.com')
     console.log('Client Connection');
 
     var $message = $("#message")
@@ -22,7 +22,7 @@ $(function(){
     socket.on('disconnect', function(){
         console.log('disconnected');
     })
-    
+
     socket.on('new_message', (data) => {
         if(speechSynthesisEnabled === true && !muted){
             var msg = new SpeechSynthesisUtterance(data.username + ' says ' + data.message);
